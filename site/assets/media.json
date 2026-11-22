@@ -1,0 +1,296 @@
+[
+  {
+    "id": "puujee",
+    "type": "movie",
+    "subtype": "documentary",
+    "title": "蒙古草原，天气晴",
+    "original": "Puujee / プージェー",
+    "year": 2006,
+    "creator": "山田和也",
+    "tags": [
+      "自然",
+      "成长",
+      "生命",
+      "纪录片"
+    ],
+    "description": "镜头跟随草原女孩普洁与家人的日常，记录游牧生活中的坚韧与变迁。",
+    "cover": "assets/puujee.jpg",
+    "seedPreference": true,
+    "sourceUrl": "https://letterboxd.com/film/puujee/",
+    "imageSourceUrl": "https://a.ltrbxd.com/resized/film-poster/2/3/6/5/2/2/236522-puujee-0-600-0-900-crop.jpg?v=ed2651b2fb",
+    "doubanUrl": ""
+  },
+  {
+    "id": "blue-gate",
+    "type": "movie",
+    "subtype": "film",
+    "title": "蓝色大门",
+    "original": "Blue Gate Crossing",
+    "year": 2002,
+    "creator": "易智言",
+    "tags": [
+      "青春",
+      "成长",
+      "自我",
+      "友情"
+    ],
+    "description": "夏日校园里的友情与朦胧心事，让一次成长留下清晰的回声。",
+    "cover": "assets/blue-gate.jpg",
+    "seedPreference": true,
+    "sourceUrl": "https://en.wikipedia.org/wiki/Blue_Gate_Crossing",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/1/1f/Blue_Gate_Crossing_film.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": ""
+  },
+  {
+    "id": "spirited",
+    "type": "movie",
+    "subtype": "film",
+    "title": "千与千寻",
+    "original": "千と千尋の神隠し",
+    "year": 2001,
+    "creator": "宫崎骏",
+    "tags": [
+      "成长",
+      "温暖",
+      "奇幻",
+      "动画"
+    ],
+    "description": "千寻在陌生的世界中学习勇气、劳动与珍惜，慢慢找到回家的路。",
+    "cover": "assets/spirited.jpg",
+    "seedPreference": true,
+    "sourceUrl": "https://www.ghibli.jp/works/chihiro/",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": ""
+  },
+  {
+    "id": "totoro",
+    "type": "movie",
+    "subtype": "film",
+    "title": "龙猫",
+    "original": "となりのトトロ",
+    "year": 1988,
+    "creator": "宫崎骏",
+    "tags": [
+      "自然",
+      "温暖",
+      "童年",
+      "动画"
+    ],
+    "description": "姐妹俩来到乡间，与森林中的奇妙相遇一起等待家人的团聚。",
+    "cover": "assets/totoro.jpg",
+    "seedPreference": true,
+    "sourceUrl": "https://en.wikipedia.org/wiki/My_Neighbor_Totoro",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/0/02/My_Neighbor_Totoro_-_Tonari_no_Totoro_%28Movie_Poster%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": ""
+  },
+  {
+    "id": "kiki",
+    "type": "movie",
+    "subtype": "film",
+    "title": "魔女宅急便",
+    "original": "魔女の宅急便",
+    "year": 1989,
+    "creator": "宫崎骏",
+    "tags": [
+      "成长",
+      "女性",
+      "温暖",
+      "动画"
+    ],
+    "description": "离家生活的琪琪在新的城市尝试工作，也学习与自己的低落相处。",
+    "cover": "assets/kiki.jpg",
+    "seedPreference": true,
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kiki%27s_Delivery_Service",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/0/07/Kiki%27s_Delivery_Service_%28Movie%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": ""
+  },
+  {
+    "id": "brilliant-series",
+    "type": "movie",
+    "subtype": "series",
+    "title": "我的天才女友",
+    "original": "L'amica geniale",
+    "year": 2018,
+    "creator": "萨维里奥·科斯坦佐等",
+    "tags": [
+      "女性",
+      "成长",
+      "友情",
+      "电视剧"
+    ],
+    "description": "埃莱娜与莉拉跨越岁月的友谊，映照出女性成长与生活选择的复杂。",
+    "cover": "assets/brilliant-series.jpg",
+    "seedPreference": true,
+    "sourceUrl": "https://www.hbo.com/my-brilliant-friend",
+    "imageSourceUrl": "https://static.tvmaze.com/uploads/images/original_untouched/540/1350132.jpg",
+    "doubanUrl": ""
+  },
+  {
+    "id": "whisper",
+    "type": "movie",
+    "subtype": "film",
+    "title": "侧耳倾听",
+    "original": "耳をすませば",
+    "year": 1995,
+    "creator": "近藤喜文",
+    "tags": [
+      "青春",
+      "成长",
+      "自我",
+      "动画"
+    ],
+    "description": "爱读书的少女开始认真面对创作与梦想，在平凡日常中寻找自己的方向。",
+    "cover": "assets/whisper.jpg",
+    "seedPreference": false,
+    "sourceUrl": "https://en.wikipedia.org/wiki/Whisper_of_the_Heart",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/9/93/Whisper_of_the_Heart_%28Movie_Poster%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": ""
+  },
+  {
+    "id": "gone-wind",
+    "type": "book",
+    "subtype": "novel",
+    "title": "飘",
+    "original": "Gone with the Wind",
+    "year": 1936,
+    "creator": "玛格丽特·米切尔",
+    "tags": [
+      "女性",
+      "成长",
+      "历史",
+      "长篇"
+    ],
+    "description": "战乱与重建中的斯嘉丽不断面对失去与选择，呈现个人命运和时代的纠缠。",
+    "cover": "assets/gone-wind.jpg",
+    "seedPreference": true,
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gone_with_the_Wind_(novel)",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Gone_with_the_Wind_%281936%2C_first_edition_cover%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": "https://book.douban.com/subject/1068920/"
+  },
+  {
+    "id": "brilliant-book",
+    "type": "book",
+    "subtype": "novel",
+    "title": "我的天才女友",
+    "original": "L'amica geniale",
+    "year": 2011,
+    "creator": "埃莱娜·费兰特",
+    "tags": [
+      "女性",
+      "成长",
+      "友情",
+      "长篇"
+    ],
+    "description": "从童年的那不勒斯出发，两位女孩在彼此的注视与竞争中逐渐长大。",
+    "cover": "assets/brilliant-book.jpg",
+    "seedPreference": false,
+    "sourceUrl": "https://en.wikipedia.org/wiki/My_Brilliant_Friend",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/4/4a/L%27amica_geniale_Elena_Ferrante_book_cover.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": "https://book.douban.com/subject/26878124/"
+  },
+  {
+    "id": "little-prince",
+    "type": "book",
+    "subtype": "novella",
+    "title": "小王子",
+    "original": "Le Petit Prince",
+    "year": 1943,
+    "creator": "安托万·德·圣埃克苏佩里",
+    "tags": [
+      "温暖",
+      "友情",
+      "成长",
+      "短篇"
+    ],
+    "description": "小王子的星际旅行，以简短篇幅重新追问关系、责任和那些看不见的珍贵。",
+    "cover": "assets/little-prince.jpg",
+    "seedPreference": false,
+    "sourceUrl": "https://en.wikipedia.org/wiki/The_Little_Prince",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": "https://book.douban.com/subject/1084336/"
+  },
+  {
+    "id": "totto-chan",
+    "type": "book",
+    "subtype": "memoir",
+    "title": "窗边的小豆豆",
+    "original": "窓ぎわのトットちゃん",
+    "year": 1981,
+    "creator": "黑柳彻子",
+    "tags": [
+      "童年",
+      "温暖",
+      "成长",
+      "教育"
+    ],
+    "description": "一段自由而被理解的校园童年，留下关于尊重与好奇心的温柔记忆。",
+    "cover": "assets/totto-chan.jpg",
+    "seedPreference": false,
+    "sourceUrl": "https://en.wikipedia.org/wiki/Totto-Chan:_The_Little_Girl_at_the_Window",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/d/d1/Totto-chan.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": "https://book.douban.com/subject/1007914/"
+  },
+  {
+    "id": "spirited-music",
+    "type": "music",
+    "subtype": "soundtrack",
+    "title": "千与千寻 原声带",
+    "original": "千と千尋の神隠し サウンドトラック",
+    "year": 2001,
+    "creator": "久石让",
+    "tags": [
+      "原声",
+      "器乐",
+      "温暖",
+      "奇幻"
+    ],
+    "description": "由电影原声延伸出的聆听示例，让熟悉的旋律唤起银幕上的片刻。",
+    "cover": "assets/spirited-music.jpg",
+    "seedPreference": false,
+    "sourceUrl": "https://music.apple.com/jp/album/668520226",
+    "imageSourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/82/7d/34/827d34f1-f358-78e0-e62c-eeb8f1dbe14f/TKCA-72165.jpg/600x600bb.jpg",
+    "doubanUrl": ""
+  },
+  {
+    "id": "kikujiro-music",
+    "type": "music",
+    "subtype": "soundtrack",
+    "title": "菊次郎的夏天 原声带",
+    "original": "Kikujiro (Original Motion Picture Soundtrack)",
+    "year": 1999,
+    "creator": "久石让",
+    "tags": [
+      "原声",
+      "器乐",
+      "温暖",
+      "夏日"
+    ],
+    "description": "明亮又带有离愁的电影原声，作为音乐标记与评论的演示条目。",
+    "cover": "assets/kikujiro-music.jpg",
+    "seedPreference": false,
+    "sourceUrl": "https://music.apple.com/jp/album/kikujiro-original-motion-picture-soundtrack/1498700467",
+    "imageSourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/53/3c/79/533c7931-cf83-b3d5-515d-935e770568ba/20UMGIM02999.rgb.jpg/600x600bb.jpg",
+    "doubanUrl": ""
+  },
+  {
+    "id": "enya",
+    "type": "music",
+    "subtype": "album",
+    "title": "A Day Without Rain",
+    "original": "A Day Without Rain",
+    "year": 2000,
+    "creator": "Enya",
+    "tags": [
+      "人声",
+      "氛围",
+      "自然",
+      "宁静"
+    ],
+    "description": "层叠人声与平静旋律构成的专辑，用作多样化音乐收藏的示例。",
+    "cover": "assets/enya.jpg",
+    "seedPreference": false,
+    "sourceUrl": "https://en.wikipedia.org/wiki/A_Day_Without_Rain",
+    "imageSourceUrl": "https://upload.wikimedia.org/wikipedia/en/e/ea/Enya7.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "doubanUrl": ""
+  }
+]

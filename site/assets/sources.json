@@ -1,0 +1,272 @@
+{
+  "accessDate": "2026-10-22",
+  "usage": "课程学习、软件设计分析及课堂展示；作品及图片版权归相应权利人，不作为可再授权素材分发。",
+  "dataPolicy": "14条固定演示条目，不抓取或展示豆瓣实时评分；年份为作品首发年份，封面可能为不同语言版本。",
+  "preferencePolicy": "seedPreference仅表明用户明确提及的作品或宫崎骏作品类别的选样，不能推断其已看状态、评分、时间或感受。音乐三条均为功能演示示例，不代表用户具体音乐偏好。侧耳倾听由近藤喜文执导，不标为宫崎骏导演作品。",
+  "documentaryVerification": {
+    "title": "蒙古草原，天气晴 / Puujee / プージェー",
+    "year": 2006,
+    "director": "Kazuya Yamada / 山田和也",
+    "source": "https://letterboxd.com/film/puujee/",
+    "evidence": "同页列有英文片名、2006年份、导演、中文Alternative Titles。关野吉晴为出镜人物。MUBI条目年份为2008，与Letterboxd不同；演示数据采用Letterboxd的2006。"
+  },
+  "ghibliStills": {
+    "source": "https://www.ghibli.jp/works/chihiro/",
+    "usageNote": "原文：※画像は常識の範囲でご自由にお使いください。",
+    "credit": "© 2001 Hayao Miyazaki/Studio Ghibli, NDDTM"
+  },
+  "metadata": [
+    {
+      "id": "puujee",
+      "title": "蒙古草原，天气晴",
+      "sourceUrl": "https://letterboxd.com/film/puujee/"
+    },
+    {
+      "id": "blue-gate",
+      "title": "蓝色大门",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Blue_Gate_Crossing"
+    },
+    {
+      "id": "spirited",
+      "title": "千与千寻",
+      "sourceUrl": "https://www.ghibli.jp/works/chihiro/"
+    },
+    {
+      "id": "totoro",
+      "title": "龙猫",
+      "sourceUrl": "https://en.wikipedia.org/wiki/My_Neighbor_Totoro"
+    },
+    {
+      "id": "kiki",
+      "title": "魔女宅急便",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Kiki%27s_Delivery_Service"
+    },
+    {
+      "id": "brilliant-series",
+      "title": "我的天才女友",
+      "sourceUrl": "https://www.hbo.com/my-brilliant-friend"
+    },
+    {
+      "id": "whisper",
+      "title": "侧耳倾听",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Whisper_of_the_Heart"
+    },
+    {
+      "id": "gone-wind",
+      "title": "飘",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Gone_with_the_Wind_(novel)"
+    },
+    {
+      "id": "brilliant-book",
+      "title": "我的天才女友",
+      "sourceUrl": "https://en.wikipedia.org/wiki/My_Brilliant_Friend"
+    },
+    {
+      "id": "little-prince",
+      "title": "小王子",
+      "sourceUrl": "https://en.wikipedia.org/wiki/The_Little_Prince"
+    },
+    {
+      "id": "totto-chan",
+      "title": "窗边的小豆豆",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Totto-Chan:_The_Little_Girl_at_the_Window"
+    },
+    {
+      "id": "spirited-music",
+      "title": "千与千寻 原声带",
+      "sourceUrl": "https://music.apple.com/jp/album/668520226"
+    },
+    {
+      "id": "kikujiro-music",
+      "title": "菊次郎的夏天 原声带",
+      "sourceUrl": "https://music.apple.com/jp/album/kikujiro-original-motion-picture-soundtrack/1498700467"
+    },
+    {
+      "id": "enya",
+      "title": "A Day Without Rain",
+      "sourceUrl": "https://en.wikipedia.org/wiki/A_Day_Without_Rain"
+    }
+  ],
+  "images": [
+    {
+      "id": "puujee",
+      "local": "源码/assets/puujee.jpg",
+      "url": "https://a.ltrbxd.com/resized/film-poster/2/3/6/5/2/2/236522-puujee-0-600-0-900-crop.jpg?v=ed2651b2fb",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 500,
+      "height": 750,
+      "sourceBytes": 57797,
+      "sha256": "12ff3d9e832590e63c33667235c1d4b0c5b53254466c0e6034e74aee91bde58e"
+    },
+    {
+      "id": "blue-gate",
+      "local": "源码/assets/blue-gate.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/1/1f/Blue_Gate_Crossing_film.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 266,
+      "height": 374,
+      "sourceBytes": 27504,
+      "sha256": "ce6ea392c4304a064e4d4d398ab99c3eadad3b6fb01611220aa236c3469f0c57"
+    },
+    {
+      "id": "spirited",
+      "local": "源码/assets/spirited.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 265,
+      "height": 376,
+      "sourceBytes": 51012,
+      "sha256": "1b9c62b9ec26faa857fc9a6f6c56cb6807d6d2eb3f74ec6ac11468e135b75e5b"
+    },
+    {
+      "id": "totoro",
+      "local": "源码/assets/totoro.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/0/02/My_Neighbor_Totoro_-_Tonari_no_Totoro_%28Movie_Poster%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 268,
+      "height": 371,
+      "sourceBytes": 39181,
+      "sha256": "e8352b3fb270fd2f480b068c64737bad87103f5bc6d673ed485d5b58638e2136"
+    },
+    {
+      "id": "kiki",
+      "local": "源码/assets/kiki.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/0/07/Kiki%27s_Delivery_Service_%28Movie%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 250,
+      "height": 351,
+      "sourceBytes": 35842,
+      "sha256": "4941c6dbaff1f17063957d1c4a2d82df555b4ceb4ec2b0c82f88b9895a0bb7cf"
+    },
+    {
+      "id": "brilliant-series",
+      "local": "源码/assets/brilliant-series.jpg",
+      "url": "https://static.tvmaze.com/uploads/images/original_untouched/540/1350132.jpg",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 2000,
+      "height": 3000,
+      "sourceBytes": 1549093,
+      "sha256": "630cd2d13cf78cb6816dc436e7ef7240b4ea5832e290d3826297591c3e862528"
+    },
+    {
+      "id": "whisper",
+      "local": "源码/assets/whisper.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/9/93/Whisper_of_the_Heart_%28Movie_Poster%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 250,
+      "height": 354,
+      "sourceBytes": 194400,
+      "sha256": "ebc17312884582f8c831310ac233646aea08c92b61e232f6068e4f983300f4d5"
+    },
+    {
+      "id": "gone-wind",
+      "local": "源码/assets/gone-wind.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Gone_with_the_Wind_%281936%2C_first_edition_cover%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 1004,
+      "height": 1511,
+      "sourceBytes": 330628,
+      "sha256": "560745113b34126c84dae85ded1ccea9efb4c14da422b8d2ef74368650d6a0c8"
+    },
+    {
+      "id": "brilliant-book",
+      "local": "源码/assets/brilliant-book.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/4/4a/L%27amica_geniale_Elena_Ferrante_book_cover.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 250,
+      "height": 389,
+      "sourceBytes": 40074,
+      "sha256": "e62452bf2edd074372839df48eb1dcd6625a8a08407022bf477cb6386e261a01"
+    },
+    {
+      "id": "little-prince",
+      "local": "源码/assets/little-prince.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 282,
+      "height": 353,
+      "sourceBytes": 78926,
+      "sha256": "34f1507a5ae523c3ad60006ed480f0d0939a75a0c6fa9cf1fa852d6573b2b464"
+    },
+    {
+      "id": "totto-chan",
+      "local": "源码/assets/totto-chan.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/d/d1/Totto-chan.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 243,
+      "height": 409,
+      "sourceBytes": 81100,
+      "sha256": "8c3d14551572518fba994bafc964f1b1af38001926835ee40abf20581b595c36"
+    },
+    {
+      "id": "spirited-music",
+      "local": "源码/assets/spirited-music.jpg",
+      "url": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/82/7d/34/827d34f1-f358-78e0-e62c-eeb8f1dbe14f/TKCA-72165.jpg/600x600bb.jpg",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 600,
+      "height": 600,
+      "sourceBytes": 134938,
+      "sha256": "6bd9e0009e127fc43c1879d5b8debab118ae35cb3eacf8753edadf891adbfabc"
+    },
+    {
+      "id": "kikujiro-music",
+      "local": "源码/assets/kikujiro-music.jpg",
+      "url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/53/3c/79/533c7931-cf83-b3d5-515d-935e770568ba/20UMGIM02999.rgb.jpg/600x600bb.jpg",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 600,
+      "height": 600,
+      "sourceBytes": 119965,
+      "sha256": "4954fd22c6892fefc65ae6f3b390e436db197348ba5d040ef4f347746095b877"
+    },
+    {
+      "id": "enya",
+      "local": "源码/assets/enya.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/en/e/ea/Enya7.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "purpose": "作品真实海报或封面，课程展示",
+      "width": 300,
+      "height": 300,
+      "sourceBytes": 120338,
+      "sha256": "69023ef99efda5e5973236da7d92990fe637cf429db148dfc8e12d3e29b907a8"
+    },
+    {
+      "id": "puujee-still",
+      "local": "源码/assets/puujee-still.jpg",
+      "url": "https://images.mubicdn.net/images/film/78215/cache-668210-1745498394/image-w1280.jpg",
+      "purpose": "纪录片真实剧照；PPT可选素材",
+      "width": 1280,
+      "height": 720,
+      "sourceBytes": 152120,
+      "sha256": "6cf26deb54b3e453400ffe56d444e49edd29dff28778f5b73c71ef0f9b80c0d5"
+    },
+    {
+      "id": "chihiro-still-043",
+      "local": "源码/assets/chihiro-still-043.jpg",
+      "url": "https://www.ghibli.jp/gallery/chihiro043.jpg",
+      "purpose": "吉卜力官方公开剧照；PPT可选素材",
+      "width": 1920,
+      "height": 1038,
+      "sourceBytes": 220671,
+      "sha256": "cfc96ea5a3a0e3ab8719fb35d331a724220c9fb0a3d0174dd4ab788e694d1184"
+    },
+    {
+      "id": "chihiro-still-045",
+      "local": "源码/assets/chihiro-still-045.jpg",
+      "url": "https://www.ghibli.jp/gallery/chihiro045.jpg",
+      "purpose": "吉卜力官方公开剧照；PPT可选素材",
+      "width": 1920,
+      "height": 1038,
+      "sourceBytes": 260819,
+      "sha256": "24fcd011fd1aaa92faeac27e6bbc586a3c5fe29ec8dbc037dfe7aa2e961bbd9b"
+    },
+    {
+      "id": "chihiro-still-046",
+      "local": "源码/assets/chihiro-still-046.jpg",
+      "url": "https://www.ghibli.jp/gallery/chihiro046.jpg",
+      "purpose": "吉卜力官方公开剧照；PPT可选素材",
+      "width": 1920,
+      "height": 1038,
+      "sourceBytes": 146854,
+      "sha256": "b6ffe53e1a97ee30dc4e29b9f364efacbaa5f017f5b577afde46e97c977afec2"
+    }
+  ]
+}
