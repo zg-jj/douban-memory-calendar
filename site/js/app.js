@@ -2,6 +2,7 @@ import {CalendarController} from './calendar.js';
 import {installExperienceUI} from './experience-ui.js';
 import {installCsvUI} from './import-ui.js';
 import {createDemoSnapshot} from './demo.js';
+import {enrichMissingArtwork} from './artwork.js';
 import {MediaItem,MediaRecord,ExperienceEvent,RecordStore} from './domain.js';
 import {LocalRecordRepository} from './repository.js';
 import {RecommendationService,TagRecommendationStrategy,DiverseRecommendationStrategy} from './strategies.js';
@@ -9,11 +10,13 @@ import {StatsView,TimelineView,PersistenceObserver,escapeHtml as h,typeName,stat
 const $=selector=>document.querySelector(selector);
 
 export class AppController {
-  constructor(items){
+  constructor(items,artworkCatalog=[]){
+    this.artworkCatalog=artworkCatalog;
     this.items=items;this.view='discover';this.type='all';this.query='';this.skipped=new Set();this.history=[];this.rating=0;this.currentItem=null;this.toastTimer=null;
     this.repository=new LocalRecordRepository(localStorage,items);
     let snapshot={items,records:[],events:[]};try{snapshot=this.repository.load();}catch(error){this.toast(`本地记录读取失败：${error.message}。原始数据仍保留，可导入有效备份。`);}
-    this.store=new RecordStore(items,snapshot);this.items=this.store.items;
+    const artwork=enrichMissingArtwork(snapshot,this.artworkCatalog);
+    this.store=new RecordStore(items,artwork.snapshot);this.items=this.store.items;
     this.recommendations=new RecommendationService(new TagRecommendationStrategy());
     this.stats=new StatsView($('#stats'),$('#type-stats'),items);
     this.timeline=new TimelineView($('#timeline-list'),this.items,id=>this.openRecord(id));
@@ -24,6 +27,7 @@ export class AppController {
     this.store.subscribe(this.calendar.calendarView);this.store.subscribe(this.calendar.timelineView);this.store.subscribe(this);
     snapshot=this.store.snapshot();this.stats.update(snapshot);this.timeline.update(snapshot);this.calendar.refresh(snapshot);
     this.bind();this.update(snapshot);this.bindGestures();window.lucide.createIcons();
+    if(artwork.updatedItems)this.persistence.update(this.store.snapshot());
     document.addEventListener('error',event=>{
       const img=event.target;if(!(img instanceof HTMLImageElement)||img.dataset.failed||img.closest('.calendar-cover'))return;
       img.dataset.failed='true';const fallback=document.createElement('span');fallback.className='cover-fallback';
@@ -140,7 +144,7 @@ export class AppController {
     try{const record=new MediaRecord({...this.store.get(this.currentItem.id),itemId:this.currentItem.id,status:$('input[name="status"]:checked').value,rating:this.rating,comment:$('#comment').value,updatedAt:new Date().toISOString()});this.history.length=0;this.store.save(record);$('#record-dialog').close();this.render();this.toast(this.storageError?'记录已更新，但本地保存失败，请导出备份':'已留下这段时光');}catch(error){$('#form-error').textContent=error.message;}
   }
   exportBackup(){const blob=new Blob([this.repository.serialize(this.store.snapshot())],{type:'application/json'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='豆瓣书影音时光簿_备份.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);this.toast('已导出当前记录');}
-  async importBackup(file){if(!file)return;try{if(file.size>5*1024*1024)throw new Error('备份不得超过 5 MB');const snapshot=this.repository.parse(await file.text());this.store.replace(snapshot);this.resetQueue();this.render();this.toast(this.storageError?'已导入，但本地保存失败，请导出备份':`已导入 ${snapshot.records.length} 条收藏与 ${snapshot.events.length} 次体验`);}catch(error){this.toast(`导入失败：${error.message}`);}finally{$('#import-file').value='';}}
+  async importBackup(file){if(!file)return;try{if(file.size>5*1024*1024)throw new Error('备份不得超过 5 MB');const parsed=this.repository.parse(await file.text());const {snapshot}=enrichMissingArtwork(parsed,this.artworkCatalog);this.store.replace(snapshot);this.resetQueue();this.render();this.toast(this.storageError?'已导入，但本地保存失败，请导出备份':`已导入 ${snapshot.records.length} 条收藏与 ${snapshot.events.length} 次体验`);}catch(error){this.toast(`导入失败：${error.message}`);}finally{$('#import-file').value='';}}
   loadDemo(){
     if((this.store.all().length||this.store.allEvents().length)&&!confirm('示例记录将替换当前收藏和体验。请先导出需要保留的记录。继续载入？'))return;
     this.resetQueue();this.store.replace(createDemoSnapshot(this.items));this.calendar.activate();
@@ -151,5 +155,7 @@ export class AppController {
 
 try{
   const response=await fetch('assets/media.json');if(!response.ok)throw new Error('作品资料读取失败');const data=await response.json();const entries=Array.isArray(data)?data:data.items;
-  const app=new AppController(entries.map(value=>new MediaItem(value)));window.app=app;
+  let artworkCatalog=[];
+  try{const response=await fetch('assets/artwork-catalog.json');if(response.ok){const data=await response.json();if(Array.isArray(data))artworkCatalog=data;}}catch{}
+  const app=new AppController(entries.map(value=>new MediaItem(value)),artworkCatalog);window.app=app;
 }catch(error){document.querySelector('main').innerHTML=`<div class="load-error"><h1>暂时无法打开时光簿</h1><p>${h(error.message)}</p><p>请通过项目启动脚本打开，并确认 assets/media.json 完整。</p></div>`;console.error(error);}

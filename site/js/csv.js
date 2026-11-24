@@ -82,9 +82,9 @@ export function previewCSV(parsed, mapping, currentSnapshot) {
   const base = new RecordStore(currentSnapshot.items, currentSnapshot).snapshot();
   const items = [...base.items], records = new Map(base.records.map(record => [record.itemId,record]));
   const events = [...base.events], fingerprints = new Set(events.map(eventKey));
-  const rows = [], errors = [];
+  const rows = [], errors = [], updatedItemIds = new Set(), originalItemIds = new Set(base.items.map(item=>item.id));
   let addedItems = 0, addedEvents = 0, addedRecords = 0, skipped = 0;
-  const result = () => ({snapshot:errors.length ? null : new RecordStore(items,{items,records:[...records.values()],events}).snapshot(),rows,errors,addedItems,addedEvents,addedRecords,skipped});
+  const result = () => ({snapshot:errors.length ? null : new RecordStore(items,{items,records:[...records.values()],events}).snapshot(),rows,errors,addedItems,updatedItems:updatedItemIds.size,addedEvents,addedRecords,skipped});
   for (const field of FIELD_DEFINITIONS) {
     const index = Number(mapping[field.key] ?? -1);
     if (!Number.isInteger(index) || index < -1 || index >= parsed.headers.length || (field.required && index < 0)) errors.push({rowNumber:1,message:`请选择有效的“${field.label}”列`});
@@ -127,7 +127,7 @@ export function previewCSV(parsed, mapping, currentSnapshot) {
       // Validate the full row before adding any part of it to the candidate snapshot.
       const rowRecord = new MediaRecord({itemId:candidate.id,status,rating,comment:values.comment,memory:values.memory,experiencedAt:values.experiencedAt});
       const event = status === 'done' ? new ExperienceEvent({itemId:candidate.id,experiencedAt:values.experiencedAt,rating,comment:values.comment,memory:values.memory,doubanRecordUrl}) : null;
-      if (event && fingerprints.has(eventKey(event))) { preview.action='重复体验，跳过';skipped++;return; }
+      let enrichedItem = false;
       if (isNewItem) { item=candidate;items.push(item);indexItem(item);addedItems++; }
       else if ((!item.doubanUrl && doubanUrl) || (!item.cover && cover)) {
         const enriched = new MediaItem({...item,doubanUrl:item.doubanUrl||doubanUrl,cover:item.cover||cover});
@@ -135,6 +135,14 @@ export function previewCSV(parsed, mapping, currentSnapshot) {
         const keyed=knownKeys.get(itemKey(item));keyed[keyed.findIndex(value=>value.id===item.id)]=enriched;
         if(enriched.doubanUrl)knownUrls.set(canonicalDoubanUrl(enriched.doubanUrl),enriched);
         item=enriched;
+        enrichedItem=true;
+        if(originalItemIds.has(item.id))updatedItemIds.add(item.id);
+      }
+      preview.type=type;preview.status=status;
+      // Duplicate experiences still allow missing work metadata to be filled.
+      // The original collection and experience objects are left untouched.
+      if (event && fingerprints.has(eventKey(event))) {
+        preview.action=enrichedItem?'已补充作品信息；重复体验，跳过':'重复体验，跳过';skipped++;return;
       }
       const existing = records.get(item.id);
       if (!existing) { records.set(item.id,rowRecord);addedRecords++; }
@@ -142,7 +150,7 @@ export function previewCSV(parsed, mapping, currentSnapshot) {
       if (event) { events.push(event);fingerprints.add(eventKey(event));addedEvents++;preview.action=existing?'新增体验，保留收藏评分':'新增收藏与体验'; }
       else if (existing) { skipped++;preview.action='收藏已存在，保留原值'; }
       else preview.action='新增收藏';
-      preview.type=type;preview.status=status;
+      if(enrichedItem)preview.action='已补充作品信息；'+preview.action;
     } catch (error) {
       preview.error=error.message;preview.action='需修正';errors.push({rowNumber,message:error.message});
     }
