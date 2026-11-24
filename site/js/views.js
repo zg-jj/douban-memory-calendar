@@ -1,6 +1,6 @@
 import {RecordObserver} from './domain.js';
 export const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-export const typeName=item=>item.type==='book'?'书籍':item.type==='music'?'音乐':({series:'剧集',documentary:'纪录片',animation:'动画'}[item.subtype]||'电影');
+export const typeName=item=>item.type==='book'?'书籍':item.type==='music'?'音乐':({series:'剧集',documentary:'纪录片',animation:'动画','剧集':'剧集','电影':'电影'}[item.subtype]||'电影');
 export const statusName=(status,item)=>({wish:item.type==='book'?'想读':item.type==='music'?'想听':'想看',doing:item.type==='book'?'在读':item.type==='music'?'在听':'在看',done:item.type==='book'?'读过':item.type==='music'?'听过':'看过'}[status]);
 export class StatsView extends RecordObserver {
   constructor(element,typeElement,items){super();Object.assign(this,{element,typeElement,items});}

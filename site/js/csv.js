@@ -6,6 +6,8 @@ export const FIELD_DEFINITIONS = [
   {key:'title',label:'作品名',required:true,aliases:['作品名','标题','名称','title','name']},
   {key:'type',label:'类型',required:true,aliases:['类型','作品类型','type','media_type']},
   {key:'experiencedAt',label:'体验日期',required:false,aliases:['体验日期','完成日期','日期','experiencedAt','date','finished_at']},
+  {key:'originalExperiencedAt',label:'原始日期',required:false,aliases:['原始日期','原始记录日期','originalExperiencedAt','original_date']},
+  {key:'dateNote',label:'日期说明',required:false,aliases:['日期说明','日期备注','dateNote','date_note']},
   {key:'rating',label:'评分',required:false,aliases:['评分','我的评分','rating','score']},
   {key:'comment',label:'短评',required:false,aliases:['短评','评论','comment','review']},
   {key:'memory',label:'记忆',required:false,aliases:['记忆','时光记忆','memory']},
@@ -81,10 +83,17 @@ const eventKey = event => JSON.stringify([event.itemId,event.experiencedAt,event
 export function previewCSV(parsed, mapping, currentSnapshot) {
   const base = new RecordStore(currentSnapshot.items, currentSnapshot).snapshot();
   const items = [...base.items], records = new Map(base.records.map(record => [record.itemId,record]));
-  const events = [...base.events], fingerprints = new Set(events.map(eventKey));
+  const events = [...base.events], fingerprints = new Map();
+  const indexEvent = (event,index) => {
+    const key=eventKey(event);
+    if(!fingerprints.has(key))fingerprints.set(key,[]);
+    fingerprints.get(key).push(index);
+  };
+  events.forEach(indexEvent);
   const rows = [], errors = [], updatedItemIds = new Set(), originalItemIds = new Set(base.items.map(item=>item.id));
+  const updatedEventIds = new Set(), originalEventIds = new Set(base.events.map(event=>event.id));
   let addedItems = 0, addedEvents = 0, addedRecords = 0, skipped = 0;
-  const result = () => ({snapshot:errors.length ? null : new RecordStore(items,{items,records:[...records.values()],events}).snapshot(),rows,errors,addedItems,updatedItems:updatedItemIds.size,addedEvents,addedRecords,skipped});
+  const result = () => ({snapshot:errors.length ? null : new RecordStore(items,{items,records:[...records.values()],events}).snapshot(),rows,errors,addedItems,updatedItems:updatedItemIds.size,updatedEvents:updatedEventIds.size,addedEvents,addedRecords,skipped});
   for (const field of FIELD_DEFINITIONS) {
     const index = Number(mapping[field.key] ?? -1);
     if (!Number.isInteger(index) || index < -1 || index >= parsed.headers.length || (field.required && index < 0)) errors.push({rowNumber:1,message:`请选择有效的“${field.label}”列`});
@@ -126,7 +135,8 @@ export function previewCSV(parsed, mapping, currentSnapshot) {
       const candidate = item || new MediaItem({id:`import-${newId()}`,title:values.title,type,creator:values.creator,cover,doubanUrl});
       // Validate the full row before adding any part of it to the candidate snapshot.
       const rowRecord = new MediaRecord({itemId:candidate.id,status,rating,comment:values.comment,memory:values.memory,experiencedAt:values.experiencedAt});
-      const event = status === 'done' ? new ExperienceEvent({itemId:candidate.id,experiencedAt:values.experiencedAt,rating,comment:values.comment,memory:values.memory,doubanRecordUrl}) : null;
+      const event = status === 'done' ? new ExperienceEvent({itemId:candidate.id,experiencedAt:values.experiencedAt,
+        originalExperiencedAt:values.originalExperiencedAt,dateNote:values.dateNote,rating,comment:values.comment,memory:values.memory,doubanRecordUrl}) : null;
       let enrichedItem = false;
       if (isNewItem) { item=candidate;items.push(item);indexItem(item);addedItems++; }
       else if ((!item.doubanUrl && doubanUrl) || (!item.cover && cover)) {
@@ -139,15 +149,32 @@ export function previewCSV(parsed, mapping, currentSnapshot) {
         if(originalItemIds.has(item.id))updatedItemIds.add(item.id);
       }
       preview.type=type;preview.status=status;
-      // Duplicate experiences still allow missing work metadata to be filled.
-      // The original collection and experience objects are left untouched.
+      // Provenance is deliberately excluded from identity: it may fill a unique
+      // duplicate, but must never create another experience or merge repeats.
       if (event && fingerprints.has(eventKey(event))) {
-        preview.action=enrichedItem?'已补充作品信息；重复体验，跳过':'重复体验，跳过';skipped++;return;
+        preview.action=enrichedItem?'已补充作品信息；重复体验，跳过':'重复体验，跳过';
+        if(event.originalExperiencedAt||event.dateNote){
+          const matches=fingerprints.get(eventKey(event));
+          if(matches.length!==1)preview.action+='；存在多次相同体验，未补充日期来源信息';
+          else {
+            const index=matches[0], previous=events[index];
+            const originalExperiencedAt=previous.originalExperiencedAt||event.originalExperiencedAt;
+            const dateNote=previous.dateNote||event.dateNote;
+            if(originalExperiencedAt!==previous.originalExperiencedAt||dateNote!==previous.dateNote){
+              events[index]=new ExperienceEvent({...previous,originalExperiencedAt,dateNote});
+              if(originalEventIds.has(previous.id))updatedEventIds.add(previous.id);
+              preview.action+='；已补充原始日期说明';
+            }
+            if((previous.originalExperiencedAt&&event.originalExperiencedAt&&previous.originalExperiencedAt!==event.originalExperiencedAt)||
+              (previous.dateNote&&event.dateNote&&previous.dateNote!==event.dateNote))preview.action+='；日期来源信息冲突，保留原值';
+          }
+        }
+        skipped++;return;
       }
       const existing = records.get(item.id);
       if (!existing) { records.set(item.id,rowRecord);addedRecords++; }
       else if (event && existing.status !== 'done') records.set(item.id,new MediaRecord({...existing,status:'done',updatedAt:event.updatedAt}));
-      if (event) { events.push(event);fingerprints.add(eventKey(event));addedEvents++;preview.action=existing?'新增体验，保留收藏评分':'新增收藏与体验'; }
+      if (event) { indexEvent(event,events.length);events.push(event);addedEvents++;preview.action=existing?'新增体验，保留收藏评分':'新增收藏与体验'; }
       else if (existing) { skipped++;preview.action='收藏已存在，保留原值'; }
       else preview.action='新增收藏';
       if(enrichedItem)preview.action='已补充作品信息；'+preview.action;

@@ -25,7 +25,7 @@ export function installCsvUI(app){
       preview=previewCSV(normalizeArtworkCSV(parsed,mapping,catalog),mapping,current.snapshot);
       if(preview.snapshot){const artwork=enrichMissingArtwork(preview.snapshot,app.artworkCatalog||[]);preview.snapshot=artwork.snapshot;preview.artworkItems=artwork.updatedItems;}
       if(preview.snapshot)preview.artworkItems+=current.updatedItems;
-      $('#csv-summary').textContent=`新增作品 ${preview.addedItems} · 新增收藏 ${preview.addedRecords} · 新增体验 ${preview.addedEvents} · 补充作品信息 ${preview.updatedItems||0} · 自动补图 ${preview.artworkItems||0} · 重复跳过 ${preview.skipped} · 错误 ${preview.errors.length}`;
+      $('#csv-summary').textContent=`新增作品 ${preview.addedItems} · 新增收藏 ${preview.addedRecords} · 新增体验 ${preview.addedEvents} · 补充作品信息 ${preview.updatedItems||0} · 自动补图 ${preview.artworkItems||0} · 补充日期来源 ${preview.updatedEvents||0} · 重复跳过 ${preview.skipped} · 错误 ${preview.errors.length}`;
       $('#confirm-csv').disabled=preview.errors.length>0||!preview.snapshot;
       const display=preview.rows.slice(0,200);
       $('#csv-preview').innerHTML=`<table><thead><tr><th>行</th><th>作品</th><th>类型</th><th>体验日期</th><th>处理结果</th></tr></thead><tbody>${display.map(row=>`<tr class="${row.error?'csv-row-error':''}"><td>${row.rowNumber}</td><td>${h(row.title)}</td><td>${h(row.type)}</td><td>${h(row.date||'日期待补充')}</td><td>${h(row.error||row.action)}</td></tr>`).join('')}</tbody></table>${preview.rows.length>200?'<p>预览展示前200行，校验与导入覆盖全部记录。</p>':''}`;
@@ -54,7 +54,7 @@ export function installCsvUI(app){
     // Rebuild against the latest state so an older preview cannot overwrite new edits.
     drawPreview();if(!preview?.snapshot||preview.errors.length)return;
     try{app.store.replace(preview.snapshot);app.resetQueue();app.render();dialog.close();
-      app.toast(app.storageError?'已导入，但本地保存失败，请导出备份':`已导入 ${preview.addedEvents} 次体验，跳过 ${preview.skipped} 条重复记录${preview.updatedItems||preview.artworkItems?'，已补充作品信息':''}`);
+      app.toast(app.storageError?'已导入，但本地保存失败，请导出备份':`已导入 ${preview.addedEvents} 次体验，跳过 ${preview.skipped} 条重复记录${preview.updatedItems||preview.artworkItems?'，已补充作品信息':''}${preview.updatedEvents?`，补充 ${preview.updatedEvents} 条日期来源`:''}`);
     }catch(error){$('#csv-error').textContent=error.message;}
   });
 }

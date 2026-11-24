@@ -14,6 +14,7 @@ export function installExperienceUI(app) {
           <label class="event-field">体验日期<input id="event-date" type="date" min="0001-01-01" max="9999-12-31"><small>记不清可以留空，归入“日期待补充”</small></label>
           <label class="event-field">这一次的评分<select id="event-rating"><option value="0">暂不评分</option><option value="1">★ 1 星</option><option value="2">★★ 2 星</option><option value="3">★★★ 3 星</option><option value="4">★★★★ 4 星</option><option value="5">★★★★★ 5 星</option></select><small>仅属于本次体验，收藏评分用于推荐</small></label>
         </div>
+        <details class="event-date-source"><summary>原始记录日期与说明</summary><label class="event-field">原始记录日期<input id="event-original-date" type="date" min="0001-01-01" max="9999-12-31"><small>仅保留来源信息，不用于安排日历。</small></label><label class="event-field">日期说明<textarea id="event-date-note" maxlength="500" rows="2" placeholder="例如：日历展示顺延日期，非核实的实际观看日期"></textarea></label></details>
         <label class="event-field">这一次的短评<textarea id="event-comment" maxlength="500" rows="3" placeholder="关于作品的感受，最多500字"></textarea></label>
         <label class="event-field">那天的记忆<textarea id="event-memory" maxlength="140" rows="2" placeholder="愿意留下的心情、地点或一起度过时光的人"></textarea></label>
         <label class="event-field">豆瓣个人记录链接（选填）<input id="event-link" type="url" placeholder="https://…douban.com/…"><small>填写自己的收藏或评论页面链接；未填写时使用作品页</small></label>
@@ -43,6 +44,9 @@ export function installExperienceUI(app) {
     $('#event-comment').value=event?.comment||'';
     $('#event-memory').value=event?.memory||'';
     $('#event-link').value=event?.doubanRecordUrl||'';
+    $('#event-original-date').value=event?.originalExperiencedAt||'';
+    $('#event-date-note').value=event?.dateNote||'';
+    dialog.querySelector('.event-date-source').open=Boolean(event?.originalExperiencedAt||event?.dateNote);
     $('#event-error').textContent='';$('#remove-event').hidden=!event;
     renderWork();dialog.showModal();
   };
@@ -55,6 +59,7 @@ export function installExperienceUI(app) {
       const old=editingId?app.store.getEvent(editingId):null;
       app.store.saveEvent(new ExperienceEvent({...old,itemId:$('#event-item').value,
         experiencedAt:$('#event-date').value,rating:Number($('#event-rating').value),
+        originalExperiencedAt:$('#event-original-date').value,dateNote:$('#event-date-note').value,
         comment:$('#event-comment').value,memory:$('#event-memory').value,
         doubanRecordUrl:$('#event-link').value.trim(),updatedAt:new Date().toISOString()}));
       app.history.length=0;app.render();dialog.close();
@@ -72,7 +77,7 @@ export function installExperienceUI(app) {
   };
   $('#collection-events').addEventListener('click',event=>{
     const button=event.target.closest('[data-event-id]');if(!button)return;
-    $('#record-dialog').close();app.openExperience(button.dataset.eventId);
+    $('#record-dialog').close();app.openMemory(button.dataset.eventId);
   });
   $('#add-collection-event').addEventListener('click',()=>{
     const id=app.currentItem?.id;if(!id)return;$('#record-dialog').close();app.openExperience(null,id);

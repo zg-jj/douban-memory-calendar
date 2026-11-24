@@ -20,8 +20,8 @@ export function validDate(value) {
   const date = new Date(`${value}T00:00:00Z`);
   return Number.isFinite(date.valueOf()) && date.toISOString().slice(0, 10) === value;
 }
-function optionalDate(value) {
-  if (typeof value !== 'string' || (value && !validDate(value))) throw new Error('体验日期必须为空或有效的 YYYY-MM-DD 日期');
+function optionalDate(value, label = '体验日期') {
+  if (typeof value !== 'string' || (value && !validDate(value))) throw new Error(`${label}必须为空或有效的 YYYY-MM-DD 日期`);
   return value;
 }
 export function validateDoubanUrl(value = '') {
@@ -80,10 +80,11 @@ export class MediaRecord {
 }
 
 export class ExperienceEvent {
-  constructor({id = newId(), itemId, experiencedAt = '', rating = 0, comment = '', memory = '', doubanRecordUrl = '', createdAt = now(), updatedAt = createdAt} = {}) {
+  constructor({id = newId(), itemId, experiencedAt = '', originalExperiencedAt = '', dateNote = '', rating = 0, comment = '', memory = '', doubanRecordUrl = '', createdAt = now(), updatedAt = createdAt} = {}) {
     text(id, '体验编号', 200, true); text(itemId, '作品编号', 200, true); optionalDate(experiencedAt); ratingValue(rating);
+    optionalDate(originalExperiencedAt, '原始日期'); text(dateNote, '日期说明', 500);
     text(comment, '短评', 500); text(memory, '时光记忆', 140); timestamp(createdAt, '创建时间'); timestamp(updatedAt, '更新时间');
-    Object.assign(this, {id, itemId, experiencedAt, rating, comment, memory, doubanRecordUrl: validateDoubanUrl(doubanRecordUrl), createdAt, updatedAt});
+    Object.assign(this, {id, itemId, experiencedAt, originalExperiencedAt, dateNote, rating, comment, memory, doubanRecordUrl: validateDoubanUrl(doubanRecordUrl), createdAt, updatedAt});
     Object.freeze(this);
   }
 }
