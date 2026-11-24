@@ -12,7 +12,7 @@ import {StatsView,TimelineView,PersistenceObserver,escapeHtml as h,typeName,stat
 const $=selector=>document.querySelector(selector);
 
 export class AppController {
-  constructor(items,artworkCatalog=[],collectionPalette={}){
+  constructor(items,artworkCatalog=[],collectionPalette={},bookshelfExhibit=null){
     this.artworkCatalog=artworkCatalog;
     this.items=items;this.view='calendar';this.type='all';this.query='';this.skipped=new Set();this.history=[];this.rating=0;this.currentItem=null;this.toastTimer=null;
     this.repository=new LocalRecordRepository(localStorage,items);
@@ -28,7 +28,7 @@ export class AppController {
     this.openMemory=id=>this.memoryDetails.openEvent(id);
     this.openCollectionCard=(itemId,preview=null)=>this.memoryDetails.openItem(itemId,preview);
     this.calendar=new CalendarController($('#calendar-root'),{onOpenEvent:id=>this.openMemory(id),onAddEvent:()=>this.openExperience(),onImport:()=>this.openCsvImport()});
-    this.room=new CollectionRoom($('#collection-room'),{palette:collectionPalette,seedItems:items,onOpenItem:(id,preview)=>this.openCollectionCard(id,preview),onDiscover:type=>{this.type=type;this.query='';$('#search').value='';this.setView('discover');},onExport:()=>this.exportBackup(),onImport:()=>$('#import-file').click()});
+    this.room=new CollectionRoom($('#collection-room'),{palette:collectionPalette,seedItems:items,exhibitSnapshot:bookshelfExhibit,onOpenItem:(id,preview,eventId)=>{if(!preview&&eventId)this.openMemory(eventId);else this.openCollectionCard(id,preview);},onDiscover:type=>{this.type=type;this.query='';$('#search').value='';this.setView('discover');},onExport:()=>this.exportBackup(),onImport:()=>$('#import-file').click()});
     this.store.subscribe(this.stats);this.store.subscribe(this.timeline);this.store.subscribe(this.persistence);
     this.store.subscribe(this.calendar.calendarView);this.store.subscribe(this.calendar.timelineView);this.store.subscribe(this);
     this.store.subscribe(this.room);this.store.subscribe(this.memoryDetails);
@@ -167,5 +167,7 @@ try{
   try{const response=await fetch('assets/artwork-catalog.json');if(response.ok){const data=await response.json();if(Array.isArray(data))artworkCatalog=data;}}catch{}
   let collectionPalette={};
   try{const response=await fetch('assets/collection-palette.json');if(response.ok)collectionPalette=await response.json();}catch{}
-  const app=new AppController(entries.map(value=>new MediaItem(value)),artworkCatalog,collectionPalette);window.app=app;
+  let bookshelfExhibit=null;
+  try{const response=await fetch('assets/bookshelf-exhibit.json');if(response.ok){const data=await response.json();if(data.schemaVersion!==1||data.label!=='展示书架')throw new Error('展示书架格式无效');bookshelfExhibit=Object.freeze({...new RecordStore(data.items,data).snapshot(),label:'展示书架'});}}catch(error){console.warn('展示书架暂时不可用',error.message);}
+  const app=new AppController(entries.map(value=>new MediaItem(value)),artworkCatalog,collectionPalette,bookshelfExhibit);window.app=app;
 }catch(error){document.querySelector('main').innerHTML=`<div class="load-error"><h1>暂时无法打开时光簿</h1><p>${h(error.message)}</p><p>请通过项目启动脚本打开，并确认 assets/media.json 完整。</p></div>`;console.error(error);}

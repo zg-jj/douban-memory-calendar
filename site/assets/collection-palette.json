@@ -10,5 +10,65 @@
   },
   "assets/totto-chan.jpg": {
     "background": "#9c8682"
+  },
+  "assets/bookshelf/24-hours.jpg": {
+    "background": "#7670aa"
+  },
+  "assets/bookshelf/zekkyo.jpg": {
+    "background": "#625955"
+  },
+  "assets/bookshelf/fang-siqi.jpg": {
+    "background": "#9f7f92"
+  },
+  "assets/bookshelf/montmartre.jpg": {
+    "background": "#8a8989"
+  },
+  "assets/bookshelf/your-summer.jpg": {
+    "background": "#538491"
+  },
+  "assets/bookshelf/feminism-from-zero.jpg": {
+    "background": "#75434e"
+  },
+  "assets/bookshelf/cries-in-drizzle.jpg": {
+    "background": "#6f7076"
+  },
+  "assets/bookshelf/flowers-algernon.jpg": {
+    "background": "#8e8f8f"
+  },
+  "assets/bookshelf/kite-runner.jpg": {
+    "background": "#756343"
+  },
+  "assets/bookshelf/summer-to-die.jpg": {
+    "background": "#719bad"
+  },
+  "assets/bookshelf/gewitter-nacht.jpg": {
+    "background": "#436775"
+  },
+  "assets/bookshelf/qiu-yuan.jpg": {
+    "background": "#a97769"
+  },
+  "assets/bookshelf/my-altay.jpg": {
+    "background": "#7b7e63"
+  },
+  "assets/bookshelf/moments-we-shared.jpg": {
+    "background": "#889591"
+  },
+  "assets/bookshelf/can-i-hug-you.jpg": {
+    "background": "#a56370"
+  },
+  "assets/bookshelf/rebirth-diary.jpg": {
+    "background": "#929985"
+  },
+  "assets/bookshelf/i-only-like-you.jpg": {
+    "background": "#477c4f"
+  },
+  "assets/bookshelf/with-you.jpg": {
+    "background": "#718cad"
+  },
+  "assets/bookshelf/kim-jiyoung.jpg": {
+    "background": "#755543"
+  },
+  "assets/bookshelf/wuthering-heights.jpg": {
+    "background": "#436275"
   }
 }
