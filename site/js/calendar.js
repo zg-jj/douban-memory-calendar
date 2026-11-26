@@ -50,7 +50,7 @@ export function selectCalendarEvents(snapshot, {year, month, types = TYPES, quer
     if (!days.has(entry.event.experiencedAt)) days.set(entry.event.experiencedAt, []);
     days.get(entry.event.experiencedAt).push(entry);
   }
-  return {dated, undated, days, workCount: new Set(dated.map(({item}) => item.id)).size, experienceCount: dated.length};
+  return {dated, undated, days};
 }
 
 function cover(item, className = '') {
@@ -62,27 +62,18 @@ function stars(event) {
   return event.rating ? `<span class="calendar-stars" aria-label="${event.rating}星">${'★'.repeat(event.rating)}${'☆'.repeat(5 - event.rating)}</span>` : '<span class="calendar-unrated">未评分</span>';
 }
 
-/** One clear action per date: select a day before choosing overlapping experiences. */
-export function calendarDayMarkup({date, day}, entries = []) {
-  if (!date) return '<div class="calendar-day calendar-day-outside" aria-hidden="true"></div>';
-  let content = '';
-  if (entries.length === 1) {
-    const {item, event} = entries[0];
-    content = `<button type="button" class="calendar-poster" data-calendar-event="${escape(event.id)}" aria-label="${escape(item.title)}，${date}，${event.rating ? `${event.rating}星` : '未评分'}，查看本次体验" title="${escape(item.title)}">${cover(item, 'calendar-lightbox')}<span class="calendar-type-mark" data-media-type="${item.type}">${TYPE_NAMES[item.type].slice(0, 1)}</span></button>`;
-  } else if (entries.length > 1) {
-    const cards = entries.slice(0, 3).map(({item, event}, index) => `<span class="calendar-stack-card" data-stack-event="${escape(event.id)}" style="--stack-index:${index}" aria-hidden="true">${cover(item, 'calendar-lightbox')}</span>`).join('');
-    content = `<button type="button" class="calendar-stack" data-calendar-day="${date}" aria-haspopup="dialog" aria-controls="calendar-day-dialog" aria-expanded="false" aria-label="${date}，${entries.length}次体验，展开当天全部作品">${cards}<span class="calendar-stack-count"><strong>${entries.length}</strong> 次体验<span class="calendar-stack-hint"> · 展开</span></span></button>`;
-  }
-  return `<div class="calendar-day${entries.length ? ' has-experiences' : ''}" data-calendar-date="${date}"><div class="calendar-day-heading"><time datetime="${date}">${day}</time>${entries.length > 1 ? `<span aria-label="${entries.length}次体验">${entries.length}</span>` : ''}</div><div class="calendar-posters" data-count="${Math.min(entries.length, 3)}">${content}</div></div>`;
-}
-
 export class CalendarView extends RecordObserver {
   constructor(element, controller) { super(); Object.assign(this, {element, controller}); }
   update(snapshot) { this.controller.acceptSnapshot(snapshot); this.render(); }
   render() {
     const controller = this.controller;
     const selection = controller.selection;
-    this.element.innerHTML = buildMonthCells(controller.year, controller.month).map(cell => calendarDayMarkup(cell, selection.days.get(cell.date) || [])).join('');
+    this.element.innerHTML = buildMonthCells(controller.year, controller.month).map(({date, day}) => {
+      if (!date) return '<div class="calendar-day calendar-day-outside" aria-hidden="true"></div>';
+      const entries = selection.days.get(date) || [];
+      const content = entries.slice(0, 3).map(({item, event}) => `<button type="button" class="calendar-poster" data-calendar-event="${escape(event.id)}" aria-label="${escape(item.title)}，${date}，${event.rating ? `${event.rating}星` : '未评分'}，查看本次体验" title="${escape(item.title)}">${cover(item)}<span class="calendar-type-mark" data-media-type="${item.type}">${TYPE_NAMES[item.type].slice(0, 1)}</span></button>`).join('');
+      return `<div class="calendar-day${entries.length ? ' has-experiences' : ''}" data-calendar-date="${date}"><div class="calendar-day-heading"><time datetime="${date}">${day}</time>${entries.length > 1 ? `<span aria-label="${entries.length}次体验">${entries.length}</span>` : ''}</div><div class="calendar-posters" data-count="${Math.min(entries.length, 3)}">${content}</div>${entries.length > 3 ? `<button type="button" class="calendar-more" data-calendar-day="${date}" aria-label="${date}还有${entries.length - 3}次体验，展开当天全部${entries.length}条">＋${entries.length - 3}</button>` : ''}</div>`;
+    }).join('');
     controller.applyHighlight();
   }
 }
@@ -101,16 +92,14 @@ export class ExperienceTimelineView extends RecordObserver {
 
 export class CalendarController {
   constructor(element, {onOpenEvent = () => {}, onAddEvent = () => {}, onImport = () => {}} = {}) {
-    Object.assign(this, {element, onOpenEvent, onAddEvent, onImport, ...today(), query: '', types: new Set(TYPES), activated: false, highlightedId: null, highlightedDate: null, monthAnimation: null});
+    Object.assign(this, {element, onOpenEvent, onAddEvent, onImport, ...today(), query: '', types: new Set(TYPES), activated: false, highlightedId: null});
     this.snapshot = {items: [], records: [], events: []};
     this.element.classList.add('memory-calendar');
-    this.element.innerHTML = `<header class="calendar-masthead"><div class="calendar-title"><p>MY PERSONAL COLLECTION / 书 · 影 · 音</p><h2>书影音 <span>Calendar</span></h2><div class="calendar-title-line"></div></div><div class="calendar-actions"><button type="button" class="calendar-action" data-calendar-add>＋ 记录一次体验</button><button type="button" class="calendar-action calendar-action-subtle" data-calendar-import>导入 CSV</button></div></header><div class="calendar-toolbar"><fieldset class="calendar-filters"><legend class="sr-only">日历作品类型，可多选</legend>${TYPES.map(type => `<label><input type="checkbox" data-calendar-type="${type}" checked><span>${TYPE_NAMES[type]}</span></label>`).join('')}<button type="button" data-calendar-all>全部</button></fieldset><div class="calendar-month-controls"><button type="button" class="calendar-month-step" data-calendar-prev aria-label="上个月">‹</button><label><span class="sr-only">月份</span><select data-calendar-month aria-label="月份">${MONTH_NAMES.map((name, index) => `<option value="${index + 1}">${name} · ${index + 1}月</option>`).join('')}</select></label><label><span class="sr-only">年份</span><input type="number" data-calendar-year aria-label="年份" min="1" max="9999" step="1" inputmode="numeric"></label><button type="button" class="calendar-month-step" data-calendar-next aria-label="下个月">›</button></div></div><div class="calendar-summary" role="status" aria-live="polite"></div><div class="calendar-composition"><aside class="calendar-experience-timeline" aria-label="当前月份体验时间轴"></aside><section class="calendar-month" aria-label="书影音封面月历"><div class="calendar-weekdays" aria-hidden="true">${['MON 一', 'TUE 二', 'WED 三', 'THU 四', 'FRI 五', 'SAT 六', 'SUN 日'].map(day => `<span>${day}</span>`).join('')}</div><div class="calendar-grid"></div><p class="calendar-note">把每一次相遇，珍藏进日历。<span>点击海报回看；同日收藏可展开选择。</span></p></section></div><dialog id="calendar-day-dialog" class="calendar-day-dialog" aria-label="当天的全部体验"><div class="calendar-day-dialog-heading"><h3></h3><button type="button" data-calendar-close-day aria-label="关闭当天列表">×</button></div><div class="calendar-day-list"></div></dialog>`;
+    this.element.innerHTML = `<header class="calendar-masthead"><div class="calendar-title"><p>BOOKS / FILMS / MUSIC</p><h2>书影音 <span>Calendar</span></h2><div class="calendar-title-line"></div></div><div class="calendar-actions"><button type="button" class="calendar-action" data-calendar-add>＋ 记录一次体验</button><button type="button" class="calendar-action calendar-action-subtle" data-calendar-import>导入 CSV</button></div></header><div class="calendar-toolbar"><fieldset class="calendar-filters"><legend class="sr-only">日历作品类型，可多选</legend>${TYPES.map(type => `<label><input type="checkbox" data-calendar-type="${type}" checked><span>${TYPE_NAMES[type]}</span></label>`).join('')}<button type="button" data-calendar-all>全部</button></fieldset><div class="calendar-month-controls"><button type="button" class="calendar-month-step" data-calendar-prev aria-label="上个月">‹</button><label><span class="sr-only">月份</span><select data-calendar-month aria-label="月份">${MONTH_NAMES.map((name, index) => `<option value="${index + 1}">${name} · ${index + 1}月</option>`).join('')}</select></label><label><span class="sr-only">年份</span><input type="number" data-calendar-year aria-label="年份" min="1" max="9999" step="1" inputmode="numeric"></label><button type="button" class="calendar-month-step" data-calendar-next aria-label="下个月">›</button></div></div><div class="calendar-summary" role="status" aria-live="polite"></div><div class="calendar-composition"><aside class="calendar-experience-timeline" aria-label="当前月份体验时间轴"></aside><section class="calendar-month" aria-label="书影音封面月历"><div class="calendar-weekdays" aria-hidden="true">${['MON 一', 'TUE 二', 'WED 三', 'THU 四', 'FRI 五', 'SAT 六', 'SUN 日'].map(day => `<span>${day}</span>`).join('')}</div><div class="calendar-grid"></div><p class="calendar-note">作品留在格子里，时光留在记忆里。<span>点击封面，回看那次体验。</span></p></section></div><dialog class="calendar-day-dialog" aria-label="当天的全部体验"><div class="calendar-day-dialog-heading"><h3></h3><button type="button" data-calendar-close-day aria-label="关闭当天列表">×</button></div><div class="calendar-day-list"></div></dialog>`;
     this.grid = this.element.querySelector('.calendar-grid');
     this.timeline = this.element.querySelector('.calendar-experience-timeline');
     this.summary = this.element.querySelector('.calendar-summary');
     this.dayDialog = this.element.querySelector('.calendar-day-dialog');
-    this.composition = this.element.querySelector('.calendar-composition');
-    this.motionPreference = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)');
     this.calendarView = new CalendarView(this.grid, this);
     this.timelineView = new ExperienceTimelineView(this.timeline, this);
     this.bind();
@@ -138,19 +127,8 @@ export class CalendarController {
   setQuery(query) { if (this.query === query) return; this.query = query; this.render(); }
   setMonth(year, month) {
     firstDay(Number(year), Number(month));
-    const previous = this.year * 12 + this.month;
-    const next = Number(year) * 12 + Number(month);
-    this.monthAnimation?.cancel();
-    this.monthAnimation = null;
-    this.year = Number(year); this.month = Number(month); this.highlightedId = null; this.highlightedDate = null;
-    if (this.dayDialog.open) this.dayDialog.close();
+    this.year = Number(year); this.month = Number(month); this.highlightedId = null;
     this.render();
-    if (previous !== next && !this.motionPreference?.matches && this.composition.animate) {
-      const offset = next > previous ? 10 : -10;
-      const animation = this.composition.animate([{opacity: .65, transform: `translateX(${offset}px)`}, {opacity: 1, transform: 'translateX(0)'}], {duration: 210, easing: 'cubic-bezier(.2,.65,.3,1)'});
-      this.monthAnimation = animation;
-      animation.finished.catch(() => {}).then(() => { if (this.monthAnimation === animation) this.monthAnimation = null; });
-    }
   }
   stepMonth(delta) {
     const index = (this.year - 1) * 12 + this.month - 1 + delta;
@@ -182,15 +160,12 @@ export class CalendarController {
     const highlight = event => {
       const target = event.target.closest('[data-calendar-event]');
       this.highlightedId = target?.dataset.calendarEvent || null;
-      this.highlightedDate = event.target.closest('[data-calendar-day]')?.dataset.calendarDay || null;
       this.applyHighlight();
     };
     this.element.addEventListener('pointerover', highlight);
     this.element.addEventListener('focusin', highlight);
-    this.element.addEventListener('pointerleave', () => { this.highlightedId = null; this.highlightedDate = null; this.applyHighlight(); });
-    this.element.addEventListener('focusout', event => { if (!this.element.contains(event.relatedTarget)) { this.highlightedId = null; this.highlightedDate = null; this.applyHighlight(); } });
-    this.motionPreference?.addEventListener('change', event => { if (event.matches) { this.monthAnimation?.cancel(); this.monthAnimation = null; } });
-    this.dayDialog.addEventListener('close', () => this.applyHighlight());
+    this.element.addEventListener('pointerleave', () => { this.highlightedId = null; this.applyHighlight(); });
+    this.element.addEventListener('focusout', event => { if (!this.element.contains(event.relatedTarget)) { this.highlightedId = null; this.applyHighlight(); } });
     this.element.addEventListener('error', event => {
       if (event.target instanceof HTMLImageElement && event.target.closest('.calendar-cover')) event.target.remove();
     }, true);
@@ -202,41 +177,29 @@ export class CalendarController {
   }
   openEvent(id, locate) {
     const event = this.snapshot.events.find(value => value.id === id); if (!event) return;
-    this.highlightedId = id; this.highlightedDate = null; this.applyHighlight();
+    this.highlightedId = id; this.applyHighlight();
     if (locate && event.experiencedAt) {
       const day = [...this.grid.querySelectorAll('[data-calendar-date]')].find(node => node.dataset.calendarDate === event.experiencedAt);
       day?.scrollIntoView({block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
     }
-    if (this.dayDialog.open) {
-      this.dayDialog.close();
-      // The reader must remember the visible stack, not a button in a closed dialog.
-      [...this.grid.querySelectorAll('[data-calendar-day]')].find(node => node.dataset.calendarDay === event.experiencedAt)?.focus({preventScroll: true});
-    }
+    if (this.dayDialog.open) this.dayDialog.close();
     this.onOpenEvent(id);
   }
   renderDayList(date) {
     const entries = this.selection.days.get(date) || [];
-    const focusedEvent = this.dayDialog.contains(document.activeElement) ? document.activeElement?.dataset.calendarEvent : null;
     this.dayDialog.querySelector('h3').textContent = `${date} · ${entries.length} 次体验`;
-    this.dayDialog.querySelector('.calendar-day-list').innerHTML = entries.map(({event, item}) => `<button type="button" class="calendar-day-list-entry" data-calendar-event="${escape(event.id)}" aria-label="${escape(item.title)}，${event.experiencedAt}，${event.rating ? `${event.rating}星` : '未评分'}，查看本次体验">${cover(item, 'calendar-lightbox')}<span><strong>${escape(item.title)}</strong><small>${TYPE_NAMES[item.type]} · ${event.experiencedAt}</small>${stars(event)}${event.comment ? `<p>${escape(event.comment)}</p>` : ''}${event.memory ? `<p class="calendar-day-memory">${escape(event.memory)}</p>` : ''}</span><span class="calendar-day-arrow" aria-hidden="true">↗</span></button>`).join('') || '<p>这一天暂时没有符合筛选的体验。</p>';
-    if (focusedEvent) [...this.dayDialog.querySelectorAll('[data-calendar-event]')].find(node => node.dataset.calendarEvent === focusedEvent)?.focus();
+    this.dayDialog.querySelector('.calendar-day-list').innerHTML = entries.map(({event, item}) => `<button type="button" class="calendar-day-list-entry" data-calendar-event="${escape(event.id)}">${cover(item)}<span><strong>${escape(item.title)}</strong><small>${TYPE_NAMES[item.type]}</small>${stars(event)}${event.memory ? `<p>${escape(event.memory)}</p>` : ''}</span></button>`).join('') || '<p>这一天暂时没有符合筛选的体验。</p>';
   }
-  openDay(date) { this.highlightedDate = date; this.dayDialog.dataset.date = date; this.renderDayList(date); if (!this.dayDialog.open) this.dayDialog.showModal(); this.applyHighlight(); }
+  openDay(date) { this.dayDialog.dataset.date = date; this.renderDayList(date); this.dayDialog.showModal(); }
   applyHighlight() {
     for (const node of this.element.querySelectorAll('[data-calendar-event]')) node.classList.toggle('is-highlighted', Boolean(this.highlightedId) && node.dataset.calendarEvent === this.highlightedId);
     const event = this.snapshot.events.find(value => value.id === this.highlightedId);
-    const date = event?.experiencedAt || this.highlightedDate;
-    for (const node of this.grid.querySelectorAll('[data-calendar-date]')) node.classList.toggle('is-highlighted-day', Boolean(date) && node.dataset.calendarDate === date);
-    for (const node of this.grid.querySelectorAll('[data-calendar-day]')) {
-      node.classList.toggle('is-highlighted', Boolean(date) && node.dataset.calendarDay === date);
-      node.setAttribute('aria-expanded', String(this.dayDialog.open && this.dayDialog.dataset.date === node.dataset.calendarDay));
-    }
-    for (const node of this.grid.querySelectorAll('[data-stack-event]')) node.classList.toggle('is-highlighted-layer', node.dataset.stackEvent === this.highlightedId);
+    for (const node of this.grid.querySelectorAll('[data-calendar-date]')) node.classList.toggle('is-highlighted-day', Boolean(event?.experiencedAt) && node.dataset.calendarDate === event.experiencedAt);
   }
   updateSummary() {
-    const {dated, undated, workCount, experienceCount} = this.selection;
-    const counts = TYPES.map(type => `${TYPE_NAMES[type]} ${dated.filter(({item}) => item.type === type).length} 次`).join('　/　');
-    this.summary.textContent = `${this.year} 年 ${this.month} 月 · ${workCount} 件作品 · ${experienceCount} 次体验　　${counts}${undated.length ? `　　日期待补充 ${undated.length}` : ''}`;
+    const {dated, undated} = this.selection;
+    const counts = TYPES.map(type => `${TYPE_NAMES[type]} ${dated.filter(({item}) => item.type === type).length}`).join('　/　');
+    this.summary.textContent = `${this.year} 年 ${this.month} 月 · ${dated.length} 次体验　　${counts}${undated.length ? `　　日期待补充 ${undated.length}` : ''}`;
   }
   render() {
     this.element.querySelector('[data-calendar-year]').value = this.year;

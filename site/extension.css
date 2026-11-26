@@ -8,3 +8,5 @@ body[data-view="calendar"] .main-column>.demo-banner{margin:0 0 14px}
 @media(max-width:700px){.tabs{gap:21px;overflow-x:auto}.tabs button{font-size:11px}.event-field-row{grid-template-columns:1fr;gap:0}.csv-mapping{grid-template-columns:1fr 1fr}.csv-dialog .dialog-actions{align-items:flex-start}.csv-dialog .dialog-actions>span{max-width:55%}.experience-dialog,.csv-dialog{padding:25px 18px}.experience-dialog h2{font-size:21px}body[data-view="calendar"] .workspace{padding:14px 12px 28px}.csv-downloads{gap:15px}.csv-file-row{flex-wrap:wrap}}
 
 .storage-warning{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 18px;padding:13px 16px;background:#fff2e2;border:1px solid #e3c49b;color:#805329;font-size:13px;line-height:1.6}.storage-warning[hidden]{display:none}.storage-warning button{flex-shrink:0;color:#805329;text-decoration:underline;text-underline-offset:4px}
+
+.event-date-source{margin:20px 0;color:#71816b;font-size:12px;border:1px solid #d9dfce;padding:12px;border-radius:3px}.event-date-source summary{cursor:pointer;min-height:24px;line-height:24px}.event-date-source .event-field:last-child{margin-bottom:0}

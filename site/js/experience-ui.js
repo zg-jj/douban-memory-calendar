@@ -77,7 +77,7 @@ export function installExperienceUI(app) {
   };
   $('#collection-events').addEventListener('click',event=>{
     const button=event.target.closest('[data-event-id]');if(!button)return;
-    $('#record-dialog').close();app.openMemory(button.dataset.eventId);
+    $('#record-dialog').close();app.openExperience(button.dataset.eventId);
   });
   $('#add-collection-event').addEventListener('click',()=>{
     const id=app.currentItem?.id;if(!id)return;$('#record-dialog').close();app.openExperience(null,id);
